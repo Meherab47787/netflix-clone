@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button'
+import { getServerSession } from 'next-auth'
 import Image from 'next/image'
+import { authOptions } from './utils/auth'
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return (
-    <div className='m-5'>
-      <Button>
-        Hellow from shadcnui
-      </Button>
-      <h1>The Button is Here</h1>
-    </div>
-  )
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+  if(!session) {
+    return redirect('/login')
+  } else {
+    return redirect('/home')
+  }
 }

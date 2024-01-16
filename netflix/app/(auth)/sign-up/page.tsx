@@ -4,8 +4,17 @@ import { GithubIcon } from "lucide-react";
 import Link from "next/link";
 import GoogleIcon from '@/public/google.svg';
 import Image from "next/image";
+import GithubSignInButton from "@/app/components/GIthubSignInButton";
+import GoogleSignInButton from "@/app/components/GoogleSignInButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/utils/auth";
+import { redirect } from "next/navigation";
 
-const Signup = () => {
+export default async function Signup() {
+    const session = await getServerSession(authOptions);
+    if(session) {
+        return redirect('/home');
+    }
     return ( 
         <div className="mt-24 
                         rounded 
@@ -32,16 +41,10 @@ const Signup = () => {
             </div>
 
             <div className="flex w-full justify-center items-center gap-x-3 mt-6">
-                <Button variant='outline' size='icon'>
-                    <GithubIcon className="w-4 h-4"/>
-                </Button>
-                <Button variant='outline' size='icon'>
-                    <Image src={GoogleIcon} alt="Google Icon" className="w-6 h-6" />
-                </Button>
+                <GithubSignInButton/>
+                <GoogleSignInButton/>
             </div>
 
         </div>
     );
 }
- 
-export default Signup;
